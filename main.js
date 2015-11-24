@@ -15,7 +15,7 @@ var ElevatorController = (function() {
     /**
      * Create an elevator.
      */
-    ElevatorController.prototype.createElevator = function(floor, testingjdsk) {
+    ElevatorController.prototype.createElevator = function(floor, moving) {
         elevator = {
             'id': this.elvId,
             'currentFloor': floor,
@@ -23,7 +23,7 @@ var ElevatorController = (function() {
             'speed': 1000,
             'doorOpen': true,
             'direction': "",
-            'moving': testingjdsk,
+            'moving': moving,
             'occupied': false,
             'floorsVisited': 1,
             'maintenanceMode': false
