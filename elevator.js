@@ -24,9 +24,10 @@ var ElevatorController = (function() {
         if (index < 0) return; // Ignore invalid indexes
 
         // Priority check
-        if (checkPriority(floor)) {
+        checkPriority(floor);
 
-        }
+        runElevator(this);
+        return this;
     };
 
     /**
@@ -38,11 +39,8 @@ var ElevatorController = (function() {
         if (index < 0) return; // Ignore invalid indexes
 
         // Priority check
-        if (checkPriority(floor)) {
+        checkPriority(floor);
 
-        }
-
-        this.floorQueue.push(index);
         runElevator(this);
         return this;
     };
@@ -61,29 +59,34 @@ var ElevatorController = (function() {
         if (event === "arrived") {
             console.log(ctrl.name + " has arrived at floor " + ctrl.currentFloor);
         } else if (event === "up") {
-
+            console.log(ctrl.name + " going up to floor " + ctrl.floorQueue[0]);
         } else if (event === "down") {
-
+            console.log(ctrl.name + " going down to floor " + ctrl.floorQueue[0]);
         }
     }
-
+    
     function checkPriority(floor) {
         if (this.floorQueue.length > 0) {
-            // Check motion of elevator
-            if (direction == "up") {
-                if (between(floor, this.currentFloor, this.floorQueue[0])) {
+            // Check the direction
+            if (this.direction == "up") {
+                // Check if floor is before the destination floor
+                if (floor >= this.currentFloor && floor <= this.floorQueue[0]) {
+                    // Added floor to the beginning of the queue
+                    this.floorQueue.unshift(floor);
+                } else {
+                    // Added floor to the end of the queue
+                    this.floorQueue.push(floor);
+                }
+            } else if (this.direction == "down") {
+                if (floor >= this.floorQueue[0] && floor <= this.currentFloor) {
                     this.floorQueue.unshift(floor);
                 } else {
                     this.floorQueue.push(floor);
                 }
-            } else if (direction == "down") {
-                
             }
+        } else {
+            this.floorQueue.push(floor);
         }
-    }
-
-    function between(x, min, max) {
-        return x >= min && x <= max;
     }
 
     return ElevatorController;
