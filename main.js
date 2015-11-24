@@ -25,7 +25,7 @@ var ElevatorController = (function() {
             'direction': "",
             'moving': moving,
             'occupied': false,
-            'floorsVisited': 1,
+            'floorsVisited': 0,
             'maintenanceMode': false
         };
 
@@ -57,16 +57,22 @@ var ElevatorController = (function() {
         // console.log(findElevator);
 
         if (typeof findElevator == "undefined") {
-            // TODO: Add queue for when elevators are done devlivering
+            // TODO: Add queue for when elevators are done delivering
             console.log("No available elevators to respond to request.");
         }
 
-        if (!findElevator.moving && !findElevator.occupied) {
+        if (findElevator.floorsVisited == 100) {
+            findElevator.maintenanceMode = true;
+        }
+
+        if (!findElevator.moving && !findElevator.occupied && !findElevator.maintenanceMode) {
             findElevator.moving = true;
             findElevator.occupied = true;
             findElevator.destinationFloor = floor;
+            findElevator.floorsVisited++;
 
             this.moveElevator(findElevator.id, findElevator.destinationFloor);
+            console.log("Elevator " + findElevator.id + " has done " + findElevator.floorsVisited + " trips");
             console.log("Dispatched elevator " + findElevator.id + " to floor " + floor);
         }
     }
@@ -105,7 +111,7 @@ var ElevatorController = (function() {
                 findElevator.occupied = false;
             }
             // console.log(findElevator);
-        }, 100);
+        }, 500);
     }
 
     /**
@@ -132,6 +138,8 @@ var ElevatorController = (function() {
 
     /**
      * Function to check which number in array is closest to the specified number.
+     * This works by getting the differences between each number in the array and returns the one with
+     * the least difference.
      */
     function closest(num, arr) {
         var curr = arr[0];
@@ -149,11 +157,9 @@ var ElevatorController = (function() {
     return ElevatorController;
 })();
 
-
 var elevCtrl = new ElevatorController();
 var elev1 = elevCtrl.createElevator(1, false);
 var elev2 = elevCtrl.createElevator(9, false);
-
 
 setTimeout(function() {
     elevCtrl.callElevator(7)
@@ -162,10 +168,6 @@ setTimeout(function() {
 setTimeout(function() {
     elevCtrl.callElevator(4)
 }, 2000);
-
-setTimeout(function() {
-    elevCtrl.callElevator(10)
-}, 1000);
 
 setTimeout(function() {
     elevCtrl.callElevator(1)
