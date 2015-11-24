@@ -1,37 +1,45 @@
 var ElevatorController = (function() {
 
     /**
-     * Elevactor Controller Constructor.
+     * Elevator Controller Constructor.
      */
     function ElevatorController() {
         this.floors = [1, 2, 3, 4, 5];
         this.speed = 2000; // Elevator Speed in milliseconds
         this.currentFloor = 1;
         this.floorQueue = [];
-        this.callbacks = [];
+        this.motion = 0; // -1 is downward, 0 is stopped, 1 is upward
+        this.occupied = false;
+        this.numberOfFloors = 0; // Number
         this.maintenanceMode = false;
     }
 
     /**
-     * Add Callback.
+     * Goes to the floor for the specified button was pressed on.
      */
-    ElevatorController.prototype.addCallback = function(callback) {
-        this.callbacks.push(callback);
-        return this;
-    };
-
-    /**
-     * Remove Callback.
-     */
-    ElevatorController.prototype.removeCallback = function(callback) {};
-
-    /**
-     * Simulate the press of the elevator button.
-     */
-    ElevatorController.prototype.press = function(floor) {
+    ElevatorController.prototype.goToFloor = function(floor) {
         // Find the index for the floor that we need to goto.
         var index = this.floors.indexOf(floor);
         if (index < 0) return; // Ignore invalid indexes
+
+        // Priority check
+        if (checkPriority(floor)) {
+
+        }
+    };
+
+    /**
+     * Calls the elevator to the floor the button was pressed on.
+     */
+    ElevatorController.prototype.callElevator = function(floor) {
+        // Find the index for the floor that we need to goto.
+        var index = this.floors.indexOf(floor);
+        if (index < 0) return; // Ignore invalid indexes
+
+        // Priority check
+        if (checkPriority(floor)) {
+
+        }
 
         this.floorQueue.push(index);
         runElevator(this);
@@ -58,12 +66,27 @@ var ElevatorController = (function() {
         }
     }
 
+    function checkPriority(floor) {
+        if (this.floors.length > 0) {
+            // Check motion of elevator
+            if (between(floor, this.currentFloor, this.floorQueue[0])) {
+
+            }
+        }
+    }
+
+    function between(x, min, max) {
+        return x >= min && x <= max;
+    }
+
     return ElevatorController;
 })();
 
 var elevator1 = new ElevatorController();
 console.log(elevator1);
 
-while (true) {
-    console.log(elevator1.currentFloor);
-}
+elevator1.press(5);
+
+// while (true) {
+//     console.log(elevator1.currentFloor);
+// }
