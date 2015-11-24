@@ -8,9 +8,10 @@ var ElevatorController = (function() {
         this.speed = 2000; // Elevator Speed in milliseconds
         this.currentFloor = 1;
         this.floorQueue = [];
-        this.motion = 0; // -1 is downward, 0 is stopped, 1 is upward
+        this.direction = "";
+        this.stopped = true;
         this.occupied = false;
-        this.numberOfFloors = 0; // Number
+        this.numberOfFloors = 0; // Number of floors the elevator has been to
         this.maintenanceMode = false;
     }
 
@@ -67,10 +68,16 @@ var ElevatorController = (function() {
     }
 
     function checkPriority(floor) {
-        if (this.floors.length > 0) {
+        if (this.floorQueue.length > 0) {
             // Check motion of elevator
-            if (between(floor, this.currentFloor, this.floorQueue[0])) {
-
+            if (direction == "up") {
+                if (between(floor, this.currentFloor, this.floorQueue[0])) {
+                    this.floorQueue.unshift(floor);
+                } else {
+                    this.floorQueue.push(floor);
+                }
+            } else if (direction == "down") {
+                
             }
         }
     }
