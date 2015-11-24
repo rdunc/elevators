@@ -1,4 +1,5 @@
 var ElevatorController = (function() {
+
     /**
      * Elevactor Controller Constructor.
      */
@@ -28,8 +29,34 @@ var ElevatorController = (function() {
      * Simulate the press of the elevator button.
      */
     ElevatorController.prototype.press = function(floor) {
+        // Find the index for the floor that we need to goto.
+        var index = this.floors.indexOf(floor);
+        if (index < 0) return; // Ignore invalid indexes
 
+        this.floorQueue.push(index);
+        runElevator(this);
+        return this;
     };
+
+    function runElevator(ctrl) {
+        // Check if the queue is empty.
+        if (ctrl.floorQueue.length == 0) return;
+
+        // Since it isn't empty, we can now process the queue.
+        if (ctrl.currentFloor == ctrl.floorQueue[0]) {
+            fireDebug(ctrl, "arrived");
+        }
+    }
+
+    function fireDebug(ctrl, event) {
+        if (event === "arrived") {
+            console.log(ctrl.name + " has arrived at floor " + ctrl.currentFloor);
+        } else if (event === "up") {
+
+        } else if (event === "down") {
+
+        }
+    }
 
     return ElevatorController;
 })();
@@ -38,5 +65,5 @@ var elevator1 = new ElevatorController();
 console.log(elevator1);
 
 while (true) {
-
+    console.log(elevator1.currentFloor);
 }
