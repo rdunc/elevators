@@ -57,8 +57,6 @@ var ElevatorController = (function() {
         // console.log(findClosestElevator);
         // console.log(closestElevatorIndex);
 
-        // TODO: Add a check to see if the elevator that was found is in maintenance mode.
-        // If it is, a new elevator should be selected.
         var findElevator = this.elevators[closestElevatorIndex];
         console.log(findElevator);
 
@@ -94,19 +92,18 @@ var ElevatorController = (function() {
 
         setTimeout(function() {
             do {
-                if (findElevator.currentFloor < destinationFloor) {
-                    findElevator.currentFloor++;
-                    console.log("[ELEVATOR " + findElevator.id + "]: Moving to floor " + findElevator.currentFloor + ".");
-                } else {
-                    findElevator.currentFloor = findElevator.currentFloor - 1;
-                    console.log("[ELEVATOR " + findElevator.id + "]: Moving to floor " + findElevator.currentFloor + ".");
-                }
-
-                console.log("[ELEVATOR " + findElevator.id + "]: Has arrived at destination floor " + findElevator.currentFloor + ".");
-
-                if (findElevator.floorsVisited == 5) {
+                if (findElevator.floorsVisited >= 5) {
                     findElevator.maintenanceMode = true;
                     console.log("[ELEVATOR " + findElevator.id + "]: Has went into maintenance mode.");
+                    break;
+                }
+
+                if (findElevator.currentFloor < destinationFloor) {
+                    findElevator.currentFloor++;
+                    console.log("[ELEVATOR " + findElevator.id + "]: Moving up to floor " + findElevator.currentFloor + ".");
+                } else {
+                    findElevator.currentFloor = findElevator.currentFloor - 1;
+                    console.log("[ELEVATOR " + findElevator.id + "]: Moving down to floor " + findElevator.currentFloor + ".");
                 }
 
                 sleep(findElevator.speed, function() {});
@@ -117,6 +114,7 @@ var ElevatorController = (function() {
                 findElevator.moving = false;
                 findElevator.occupied = false;
                 findElevator.floorsVisited++;
+                console.log("[ELEVATOR " + findElevator.id + "]: Has arrived at destination floor " + destinationFloor + ".");
                 console.log("[ELEVATOR " + findElevator.id + "]: Has opened it's doors.");
             }
         }, 500);
