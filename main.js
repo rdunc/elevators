@@ -46,7 +46,7 @@ var ElevatorController = (function() {
 
         var elevatorFloor = [];
         for (var i = 0; i < this.elevators.length; i++) {
-            if (!this.elevators[i].moving) {
+            if (!this.elevators[i].moving && !this.elevators[i].maintenanceMode) {
                 elevatorFloor.push(this.elevators[i].currentFloor);
             }
         }
@@ -104,7 +104,7 @@ var ElevatorController = (function() {
 
                 console.log("[ELEVATOR " + findElevator.id + "]: Has arrived at destination floor " + findElevator.currentFloor + ".");
 
-                if (findElevator.floorsVisited == 10) {
+                if (findElevator.floorsVisited == 5) {
                     findElevator.maintenanceMode = true;
                     console.log("[ELEVATOR " + findElevator.id + "]: Has went into maintenance mode.");
                 }
