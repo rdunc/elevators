@@ -173,10 +173,10 @@ var elev5 = elevCtrl.createElevator(5, false);
 function testingElevator() {
     setTimeout(function() {
         var randomNumber = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-        elevCtrl.callElevator(randomNumber)
+        elevCtrl.callElevator(randomNumber);
 
         testingElevator();
-    }, 4000);
+    }, 1000);
 }
 
 testingElevator();
